@@ -1,0 +1,31 @@
+--> Test placement des unités
+
+--> UI des ordres (affichage - BoardPiece) - l'affichage doit se faire après les unités (donc au-dessus)
+--> API Player pour poser un Ordre sur une Area
+--> UI debug placement des ordres
+--> Test placement des ordres
+
+--> UI des pistes d'influence (image + affichage - BoardPiece)
+--> _RenderPlayer fait le RegisterElement sur le Board pour les tokens de piste d'influence
+--> API Player init + update de la position sur les pistes d'influence
+
+--> UI des pions de pouvoir à mettre sur le plateau (image + affichage - BoardPiece)
+--> API Player pour poser un point de pouvoir sur le plateau
+--> UI debug placement des points de pouvoir
+--> Test placement des points de pouvoir
+
+--> "Engine Move On", c'est le Game qui prend en charge le déroulement de la partie
+--> Infra à mettre en place d'exécution d'états. On est dans un état et on passe dans un autre une fois une condition remplie.
+	--> La condition peut être remplie automatiquement (type le tirage des cartes Westeros) ou doit attendre la validation d'un Player (type jouer un ordre).
+
+--> Essayer de faire un tour de jeu complet (sans combat !! et sans carte Westeros !!)
+
+--> La suite
+
+--> Affichage : accélérer les déplacements flèches, implémenter le déplacement en y plus le zoom avec la molette de la souris, zoomer vers le centre de l'écran
+				et non en haut à gauche
+
+--> Implémenter clique droit pour afficher des infos
+	--> Sur un ordre : type de l'ordre + propriétaire
+	--> Sur des unités : liste des unités (au cas où pb on voit pas bien les unités)
+	--> Sur les cartes des maisons : descriptif de la carte : pouvoir + valeur
