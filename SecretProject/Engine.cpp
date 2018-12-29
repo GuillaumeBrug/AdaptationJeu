@@ -3,6 +3,7 @@
 #include "Board.h"
 #include "GraphicElement.h"
 #include "WindowPrompt.h"
+#include "SelectionPrompt.h"
 #include "Tdf_Debug.h"
 #include "SDL_syswm.h"
 #include "resource.h"
@@ -10,11 +11,11 @@
 #include <winuser.h>
 #include <commctrl.h>
 
-static int _CameraMove = 20;
+static int _CameraMove = 100;
 static Engine* _ThisEngine;
 
 Engine::Engine():_NbPlayers(0), _pGame(NULL), _pBoard(NULL), _pMainWindow(NULL), _ZoomRatio(1.0),
-_CtrlKeyDown(false), _pPrompt(false)
+_CtrlKeyDown(false), _pPrompt(NULL), _pSelection(NULL)
 {
 	_ThisEngine = this;
 }
@@ -48,7 +49,10 @@ LRESULT CALLBACK _MenuProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, U
 			debug.AddUnitInArea();
 			break;
 		case ID_DEBUG_ADDORDERINAREA:
-
+			debug.AddOrderInArea();
+			break;
+		case ID_DEBUG_ADJACENTAREAS:
+			debug.AdjacentAreas();
 			break;
 		}
 		break;
@@ -70,19 +74,20 @@ L_HRESULT Engine::Init()
 	_pBoard = new Board(_NbPlayers, _pPlayers);
 	CHK_AND_RET_HR(_pBoard);
 
+	_pMainWindow = SDL_CreateWindow("Trone de Fer - 2nd Edition", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_MAXIMIZED);
+
+	// Set Borad to the Players
 	for (int i = 0; i < _NbPlayers; i++)
 	{
 		_pPlayers[i]->SetBoard(_pBoard);
 	}
-	
+
 	// Initialize the Game
-	CHK_SUCCESS(_pGame->Init());
+	CHK_SUCCESS(_pGame->Init(_pBoard, this));
 
 	// Initialize the Board
 	CHK_SUCCESS(_pBoard->Init());
-
-	_pMainWindow = SDL_CreateWindow("Trone de Fer - 2nd Edition", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_MAXIMIZED);
 	
 	// Put a menu in the Window
 	HWND myWindow;
@@ -144,25 +149,52 @@ L_HRESULT Engine::ProcessEvent(SDL_Event* ipEvent)
 		{
 		case SDLK_UP:
 			if (!_CtrlKeyDown && _Camera.y > _BoardSize.y)
-				_Camera.y -= _CameraMove; // Move the Camera up
+			{
+				// Move the Camera up
+				if (_Camera.y - _CameraMove >= 0)
+					_Camera.y -= _CameraMove; 
+				else
+					_Camera.y = 0;
+			}
 
 			if (_CtrlKeyDown)
 				_ZoomRatio += .03; // Zoom
 			break;
 		case SDLK_DOWN:
 			if (!_CtrlKeyDown && _Camera.y + _Camera.h < _BoardSize.y + _BoardSize.h)
-				_Camera.y += _CameraMove; // Move the Camera down
+			{
+				// Move the Camera down
+				if (_Camera.y + _CameraMove <= _BoardSize.y + _BoardSize.h)
+					_Camera.y += _CameraMove;
+				else
+					_Camera.y = _BoardSize.y + _BoardSize.h - _Camera.y;
+			}
+				
 
 			if (_CtrlKeyDown && _ZoomRatio > _MinZoomRatio)
 				_ZoomRatio -= .03; // Unzoom
 			break;
 		case SDLK_LEFT:
 			if (_Camera.x > _BoardSize.x)
-				_Camera.x -= _CameraMove; // Move the Camera left
+			{
+				// Move the Camera left
+				if (_Camera.x - _CameraMove >= 0)
+					_Camera.x -= _CameraMove;
+				else
+					_Camera.x = 0;
+			}
+				
 			break;
 		case SDLK_RIGHT:
 			if (_Camera.x + _Camera.w < _BoardSize.x + _BoardSize.w)
-				_Camera.x += _CameraMove; // Move the Camera right
+			{
+				// Move the Camera right
+				if (_Camera.x + _Camera.w + _CameraMove <= _BoardSize.x + _BoardSize.w)
+					_Camera.x += _CameraMove;
+				else
+					_Camera.x = _BoardSize.x + _BoardSize.w - _Camera.w;
+			}
+				
 			break;
 		case SDLK_LCTRL:
 		case SDLK_RCTRL:
@@ -197,6 +229,13 @@ L_HRESULT Engine::ProcessEvent(SDL_Event* ipEvent)
 					CHK_SUCCESS(_pPrompt->InputClick(iX, iY));
 				}				
 			}
+
+			if (NULL != _pSelection)
+			{
+				int iX = (_Camera.x + ipEvent->button.x) / _ZoomRatio;
+				int iY = (_Camera.y + ipEvent->button.y) / _ZoomRatio;
+				_pSelection->InputClick(iX, iY);
+			}
 		}
 	}
 
@@ -205,6 +244,7 @@ L_HRESULT Engine::ProcessEvent(SDL_Event* ipEvent)
 
 L_HRESULT Engine::MoveOn()
 {
+	CHK_SUCCESS(_pGame->MoveOn());
 	return L_S_OK;
 }
 
@@ -259,12 +299,16 @@ L_HRESULT Engine::Render()
 	// If a Window is prompted, render it
 	if (_pPrompt)
 	{
-		if (_pPrompt->IsComplete())
+		if (_pPrompt->IsComplete() && _pPrompt->DoDelete())
 		{
 			delete _pPrompt;
 			_pPrompt = NULL;
 		}
-		else
+		else if (_pPrompt->IsComplete())
+		{
+			_pPrompt = NULL;
+		}
+		else if(!_pPrompt->IsComplete())
 		{
 			SDL_Surface* pPromptSurface = NULL;
 			SDL_Rect promptPosition;
@@ -290,9 +334,8 @@ L_HRESULT Engine::Clean()
 		delete _pPlayers[i];
 	_NbPlayers = 0;
 
-	if (_pPrompt)
-		delete _pPrompt;
 	_pPrompt = NULL;
+	_pSelection = NULL;
 
 	SDL_DestroyWindow(_pMainWindow);
 
@@ -308,5 +351,24 @@ L_HRESULT Engine::RegisterPromptWindow(WindowPrompt* ipPrompt)
 
 	_pPrompt = ipPrompt;
 
+	return L_S_OK;
+}
+
+L_HRESULT Engine::RegisterSelectionPrompt(SelectionPrompt* ipSelection)
+{
+	if (NULL != _pSelection)
+		return L_E_FAIL;
+
+	_pSelection = ipSelection;
+
+	return L_S_OK;
+}
+
+L_HRESULT Engine::GetWindowDimension(int& oWidth, int& oHeight)
+{
+	CHK_AND_RET_HR(_pMainWindow);
+
+	SDL_GetWindowSize(_pMainWindow, &oWidth, &oHeight);
+	
 	return L_S_OK;
 }

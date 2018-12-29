@@ -25,9 +25,9 @@ int main(int argc, char* args[])
 	CHK_SUCCESS(engine.AddNewPlayer("Player1"));
 	CHK_SUCCESS(engine.AddNewPlayer("Player2"));
 	CHK_SUCCESS(engine.AddNewPlayer("Player3"));
-	CHK_SUCCESS(engine.AddNewPlayer("Player4"));
+	/*CHK_SUCCESS(engine.AddNewPlayer("Player4"));
 	CHK_SUCCESS(engine.AddNewPlayer("Player5"));
-	CHK_SUCCESS(engine.AddNewPlayer("Player6"));
+	CHK_SUCCESS(engine.AddNewPlayer("Player6"));*/
 
 	CHK_SUCCESS(engine.Init());
 

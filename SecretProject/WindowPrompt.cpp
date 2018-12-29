@@ -1,7 +1,8 @@
 #include "WindowPrompt.h"
 #include "WindowElement.h"
 
-WindowPrompt::WindowPrompt():GraphicElement(), _bComplete(false), _ScaleX(0), _ScaleY(0)
+WindowPrompt::WindowPrompt(int iWinWidth, int iWinHeight):GraphicElement(), _bComplete(false), 
+_ScaleX(0), _ScaleY(0), _WinWidth(iWinWidth), _WinHeight(iWinHeight), _DoDelete(false)
 {
 }
 

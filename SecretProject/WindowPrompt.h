@@ -12,12 +12,15 @@ class WindowPrompt :
 public:
 	virtual ~WindowPrompt();
 
-	L_HRESULT InputClick(int iX, int iY);	
+	L_HRESULT InputClick(int iX, int iY);
 
 	bool IsComplete() { return _bComplete; }
+	virtual void Reset() { _bComplete = false; }
+
+	bool DoDelete() { return _DoDelete; }
 
 protected:
-	WindowPrompt();
+	WindowPrompt(int iWinWidth, int iWinHeight);
 
 	virtual L_HRESULT _OnElementClicked(int iElementID) = 0;
 
@@ -26,6 +29,7 @@ protected:
 	int _WinWidth;
 	int _WinHeight;
 	bool _bComplete;
+	bool _DoDelete;
 	double _ScaleX;
 	double _ScaleY;
 

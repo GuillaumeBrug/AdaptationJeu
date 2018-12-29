@@ -9,6 +9,7 @@
 class Game;
 class Board;
 class WindowPrompt;
+class SelectionPrompt;
 
 class Engine
 {
@@ -29,6 +30,12 @@ public:
 	L_HRESULT Clean();
 
 	L_HRESULT RegisterPromptWindow(WindowPrompt* ipPrompt);
+	void UnregisterPromptWindow() { _pPrompt = NULL; }
+
+	L_HRESULT RegisterSelectionPrompt(SelectionPrompt* ipSelection);
+	void UnregisterSelectionPrompt() { _pSelection = NULL; }
+
+	L_HRESULT GetWindowDimension(int& oWidth, int& oHeight);
 
 private:
 	int _NbPlayers;
@@ -36,6 +43,7 @@ private:
 	Game* _pGame;
 	Board* _pBoard;
 	WindowPrompt* _pPrompt;
+	SelectionPrompt* _pSelection;
 
 	bool _CtrlKeyDown;
 	double _ZoomRatio;

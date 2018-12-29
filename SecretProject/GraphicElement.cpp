@@ -21,8 +21,6 @@ L_HRESULT GraphicElement::Render(SDL_Surface*& opSurface, SDL_Rect& oPosition)
 		_pSurface = NULL;
 
 		CHK_SUCCESS(_Init());
-		if (NULL == _pSurface)
-			int i = 0;
 		CHK_AND_RET_HR(_pSurface);
 		_Initialized = true;
 	}
@@ -31,4 +29,17 @@ L_HRESULT GraphicElement::Render(SDL_Surface*& opSurface, SDL_Rect& oPosition)
 	oPosition = _Position;
 
 	return L_S_OK;
+}
+
+bool GraphicElement::HasBeenClicked(int iX, int iY)
+{
+	//printf("Is Element %d  at {%d, %d} sized {%d, %d} clicked ?", _ID, _Position.x, _Position.y, _Position.w, _Position.h);
+
+	bool inX = iX >= _Position.x && iX <= _Position.x + _Position.w;
+	bool inY = iY >= _Position.y && iY <= _Position.y + _Position.h;
+	/*if (inX && inY)
+		printf(" YES\n");
+	else
+		printf(" NO\n");*/
+	return inX && inY;
 }

@@ -35,12 +35,11 @@ enum Button_ID {
 	BUT_CANCEL
 };
 
-AddUnitDebugPrompt::AddUnitDebugPrompt(int iWinWidth, int iWinHeight) :WindowPrompt(),
+AddUnitDebugPrompt::AddUnitDebugPrompt(int iWinWidth, int iWinHeight) :WindowPrompt(iWinWidth, iWinHeight),
 _NbPlayers(0), _pSelectedPlayer(NULL), _Area(AREA::CASTLE_BLACK), _NbFoot(0), _NbKnight(0),
 _NbEngine(0), _NbShip(0)
 {
-	_WinWidth = iWinWidth;
-	_WinHeight = iWinHeight;
+	_DoDelete = true;
 }
 
 AddUnitDebugPrompt::~AddUnitDebugPrompt()
