@@ -11,6 +11,8 @@ public:
 
 	L_HRESULT Render(SDL_Surface*& opSurface, SDL_Rect& oPosition);
 
+	virtual bool HasBeenClicked(int iX, int iY);
+
 	SDL_Rect GetPosition() { return _Position; }
 
 protected:

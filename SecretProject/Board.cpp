@@ -224,6 +224,230 @@ std::string Board::GetAreaName(AREA iArea)
 	return "error";
 }
 
+std::vector<AREA> Board::GetAdjacentAreas(AREA iArea)
+{
+	std::vector<AREA> list;
+
+	switch (iArea)
+	{
+	case AREA::CASTLE_BLACK:
+		list.push_back(BAY_OF_ICE); list.push_back(KARHOLD); list.push_back(WINTERFELL); list.push_back(THE_SHIVERING_SEA);
+		break;
+	case AREA::BAY_OF_ICE:
+		list.push_back(CASTLE_BLACK); list.push_back(THE_STONY_SHORE); list.push_back(WINTERFELL); list.push_back(SUNSEAT_SEA);
+		list.push_back(GREYWATER_WATCH); list.push_back(FUNTS_FINGER); list.push_back(WINTERFELL_PORT);
+		break;
+	case AREA::KARHOLD:
+		list.push_back(CASTLE_BLACK); list.push_back(WINTERFELL); list.push_back(THE_SHIVERING_SEA);
+		break;
+	case AREA::WINTERFELL:
+		list.push_back(CASTLE_BLACK); list.push_back(THE_STONY_SHORE); list.push_back(BAY_OF_ICE); list.push_back(KARHOLD); 
+		list.push_back(WHITE_HARBOR); list.push_back(THE_SHIVERING_SEA); list.push_back(MOAT_CAILIN);
+		break;
+	case AREA::WINTERFELL_PORT:
+		list.push_back(WINTERFELL); list.push_back(BAY_OF_ICE);
+		break;
+	case AREA::THE_STONY_SHORE:
+		list.push_back(WINTERFELL); list.push_back(BAY_OF_ICE);
+		break;
+	case AREA::WHITE_HARBOR:
+		list.push_back(WINTERFELL); list.push_back(WIDOWS_WATCH); list.push_back(THE_SHIVERING_SEA); list.push_back(THE_NARROW_SEA);
+		list.push_back(MOAT_CAILIN);
+		break;
+	case AREA::WHITE_HARBOR_PORT:
+		list.push_back(WHITE_HARBOR); list.push_back(THE_NARROW_SEA);
+		break;
+	case AREA::THE_SHIVERING_SEA:
+		list.push_back(WINTERFELL); list.push_back(KARHOLD); list.push_back(WHITE_HARBOR); list.push_back(WIDOWS_WATCH);
+		list.push_back(CASTLE_BLACK); list.push_back(THE_NARROW_SEA);
+		break;
+	case AREA::WIDOWS_WATCH:
+		list.push_back(THE_NARROW_SEA); list.push_back(WHITE_HARBOR); list.push_back(THE_SHIVERING_SEA);
+		break;
+	case AREA::THE_NARROW_SEA:
+		list.push_back(THE_SHIVERING_SEA); list.push_back(WHITE_HARBOR); list.push_back(WIDOWS_WATCH); list.push_back(MOAT_CAILIN);
+		list.push_back(THE_TWINS); list.push_back(THE_FINGERS); list.push_back(THE_MOUNTAINS_OF_THE_MOON); list.push_back(THE_EYRIE);
+		list.push_back(CRACKLAW_POINT); list.push_back(SHIPBREAKER_BAY); list.push_back(WHITE_HARBOR_PORT);
+		break;
+	case AREA::GREYWATER_WATCH:
+		list.push_back(MOAT_CAILIN); list.push_back(FUNTS_FINGER); list.push_back(IRONMANS_BAY); list.push_back(BAY_OF_ICE);
+		list.push_back(SEAGARD);
+		break;
+	case AREA::MOAT_CAILIN:
+		list.push_back(WINTERFELL); list.push_back(WHITE_HARBOR); list.push_back(THE_NARROW_SEA); list.push_back(THE_TWINS);
+		list.push_back(SEAGARD); list.push_back(GREYWATER_WATCH);
+		break;
+	case AREA::FUNTS_FINGER:
+		list.push_back(BAY_OF_ICE); list.push_back(GREYWATER_WATCH); list.push_back(IRONMANS_BAY); list.push_back(SUNSEAT_SEA);
+		break;
+	case AREA::SUNSEAT_SEA:
+		list.push_back(BAY_OF_ICE); list.push_back(FUNTS_FINGER); list.push_back(IRONMANS_BAY); list.push_back(THE_GOLDEN_SEA);
+		list.push_back(SEAROAD_MARCHES); list.push_back(WEST_SUMMER_SEA);
+		break;
+	case AREA::IRONMANS_BAY:
+		list.push_back(SUNSEAT_SEA); list.push_back(FUNTS_FINGER); list.push_back(GREYWATER_WATCH); list.push_back(SEAGARD);
+		list.push_back(RIVERRUN); list.push_back(THE_GOLDEN_SEA); list.push_back(PYKE); list.push_back(IRONMANS_BAY_PORT);
+		break;
+	case AREA::IRONMANS_BAY_PORT:
+		list.push_back(PYKE); list.push_back(IRONMANS_BAY);
+		break;
+	case AREA::SEAGARD:
+		list.push_back(IRONMANS_BAY); list.push_back(GREYWATER_WATCH); list.push_back(MOAT_CAILIN); list.push_back(THE_TWINS);
+		list.push_back(RIVERRUN);
+		break;
+	case AREA::THE_FINGERS:
+		list.push_back(THE_NARROW_SEA); list.push_back(THE_MOUNTAINS_OF_THE_MOON); list.push_back(THE_TWINS);
+		break;
+	case AREA::THE_TWINS:
+		list.push_back(MOAT_CAILIN); list.push_back(THE_NARROW_SEA); list.push_back(THE_FINGERS); list.push_back(THE_MOUNTAINS_OF_THE_MOON);
+		list.push_back(SEAGARD);
+		break;
+	case AREA::PYKE:
+		list.push_back(IRONMANS_BAY);
+		break;
+	case AREA::THE_MOUNTAINS_OF_THE_MOON:
+		list.push_back(THE_TWINS); list.push_back(THE_FINGERS); list.push_back(THE_NARROW_SEA); list.push_back(THE_EYRIE);
+		list.push_back(CRACKLAW_POINT);
+		break;
+	case AREA::RIVERRUN:
+		list.push_back(THE_GOLDEN_SEA); list.push_back(IRONMANS_BAY); list.push_back(SEAGARD); list.push_back(HARRENHAL);
+		list.push_back(STONEY_SEPT); list.push_back(LANNISPORT);
+		break;
+	case AREA::THE_EYRIE:
+		list.push_back(THE_MOUNTAINS_OF_THE_MOON); list.push_back(THE_NARROW_SEA);
+		break;
+	case AREA::LANNISPORT:
+		list.push_back(THE_GOLDEN_SEA); list.push_back(RIVERRUN); list.push_back(STONEY_SEPT); list.push_back(SEAROAD_MARCHES);
+		break;
+	case AREA::LANNISPORT_PORT:
+		list.push_back(LANNISPORT); list.push_back(THE_GOLDEN_SEA);
+		break;
+	case AREA::HARRENHAL:
+		list.push_back(BLACKWATER); list.push_back(RIVERRUN); list.push_back(STONEY_SEPT); list.push_back(CRACKLAW_POINT);
+		break;
+	case AREA::DRAGONSTONE:
+		list.push_back(SHIPBREAKER_BAY);
+		break;
+	case AREA::DRAGONSTONE_PORT:
+		list.push_back(DRAGONSTONE); list.push_back(SHIPBREAKER_BAY);
+		break;
+	case AREA::STONEY_SEPT:
+		list.push_back(LANNISPORT); list.push_back(RIVERRUN); list.push_back(HARRENHAL); list.push_back(BLACKWATER);
+		list.push_back(SEAROAD_MARCHES);
+		break;
+	case AREA::CRACKLAW_POINT:
+		list.push_back(THE_MOUNTAINS_OF_THE_MOON); list.push_back(THE_NARROW_SEA); list.push_back(HARRENHAL); list.push_back(SHIPBREAKER_BAY);
+		list.push_back(BLACKWATER_BAY); list.push_back(KNGS_LANDING); list.push_back(BLACKWATER);
+		break;
+	case AREA::THE_GOLDEN_SEA:
+		list.push_back(SUNSEAT_SEA); list.push_back(IRONMANS_BAY); list.push_back(RIVERRUN); list.push_back(LANNISPORT);
+		list.push_back(SEAROAD_MARCHES); list.push_back(LANNISPORT_PORT);
+		break;
+	case AREA::BLACKWATER_BAY:
+		list.push_back(CRACKLAW_POINT); list.push_back(SHIPBREAKER_BAY); list.push_back(KINGSWOOD); list.push_back(KNGS_LANDING);
+		break;
+	case AREA::SEAROAD_MARCHES:
+		list.push_back(SUNSEAT_SEA); list.push_back(THE_GOLDEN_SEA); list.push_back(LANNISPORT); list.push_back(STONEY_SEPT);
+		list.push_back(BLACKWATER); list.push_back(THE_REACH); list.push_back(HIGHGARDEN); list.push_back(WEST_SUMMER_SEA);
+		break;
+	case AREA::BLACKWATER:
+		list.push_back(SEAROAD_MARCHES); list.push_back(HARRENHAL); list.push_back(CRACKLAW_POINT); list.push_back(STONEY_SEPT);
+		list.push_back(KNGS_LANDING); list.push_back(THE_REACH);
+		break;
+	case AREA::KNGS_LANDING:
+		list.push_back(BLACKWATER); list.push_back(CRACKLAW_POINT); list.push_back(BLACKWATER_BAY); list.push_back(KINGSWOOD);
+		list.push_back(THE_REACH);
+		break;
+	case AREA::KINGSWOOD:
+		list.push_back(KNGS_LANDING); list.push_back(BLACKWATER_BAY); list.push_back(SHIPBREAKER_BAY); list.push_back(STORMS_END);
+		list.push_back(THE_BONEWAY); list.push_back(THE_REACH);
+		break;
+	case AREA::SHIPBREAKER_BAY:
+		list.push_back(STORMS_END); list.push_back(KINGSWOOD); list.push_back(BLACKWATER_BAY); list.push_back(CRACKLAW_POINT);
+		list.push_back(THE_NARROW_SEA); list.push_back(EAST_SUMMER_SEA); list.push_back(STORMS_END_PORT); list.push_back(DRAGONSTONE_PORT);
+		list.push_back(DRAGONSTONE);
+		break;
+	case AREA::HIGHGARDEN:
+		list.push_back(WEST_SUMMER_SEA); list.push_back(REDWYNE_STRAIGHTS); list.push_back(SEAROAD_MARCHES); list.push_back(THE_REACH);
+		list.push_back(DORNISH_MARCHES); list.push_back(OLDTOWN);
+		break;
+	case AREA::THE_REACH:
+		list.push_back(HIGHGARDEN); list.push_back(SEAROAD_MARCHES); list.push_back(BLACKWATER); list.push_back(KNGS_LANDING);
+		list.push_back(KINGSWOOD); list.push_back(THE_BONEWAY); list.push_back(DORNISH_MARCHES);
+		break;
+	case AREA::DORNISH_MARCHES:
+		list.push_back(HIGHGARDEN); list.push_back(THE_REACH); list.push_back(THE_BONEWAY); list.push_back(PRINCES_PASS);
+		list.push_back(THREE_TOWERS); list.push_back(OLDTOWN);
+		break;
+	case AREA::THE_BONEWAY:
+		list.push_back(DORNISH_MARCHES); list.push_back(THE_REACH); list.push_back(KINGSWOOD); list.push_back(STORMS_END);
+		list.push_back(SEA_OF_DORNE); list.push_back(YRONWOOD); list.push_back(PRINCES_PASS);
+		break;
+	case AREA::STORMS_END:
+		list.push_back(THE_BONEWAY); list.push_back(KINGSWOOD); list.push_back(SHIPBREAKER_BAY); list.push_back(EAST_SUMMER_SEA);
+		list.push_back(SEA_OF_DORNE);
+		break;
+	case AREA::STORMS_END_PORT:
+		list.push_back(STORMS_END); list.push_back(SHIPBREAKER_BAY);
+		break;
+	case AREA::OLDTOWN:
+		list.push_back(REDWYNE_STRAIGHTS); list.push_back(HIGHGARDEN); list.push_back(DORNISH_MARCHES); list.push_back(THREE_TOWERS);
+		break;
+	case AREA::OLDTOWN_PORT:
+		list.push_back(OLDTOWN); list.push_back(REDWYNE_STRAIGHTS);
+		break;
+	case AREA::PRINCES_PASS:
+		list.push_back(THREE_TOWERS); list.push_back(DORNISH_MARCHES); list.push_back(THE_BONEWAY); list.push_back(YRONWOOD);
+		list.push_back(STARFALL);
+		break;
+	case AREA::SEA_OF_DORNE:
+		list.push_back(THE_BONEWAY); list.push_back(STORMS_END); list.push_back(EAST_SUMMER_SEA); list.push_back(SUNSPEAR);
+		list.push_back(YRONWOOD);
+		break;
+	case AREA::THREE_TOWERS:
+		list.push_back(REDWYNE_STRAIGHTS); list.push_back(OLDTOWN); list.push_back(DORNISH_MARCHES); list.push_back(PRINCES_PASS);
+		list.push_back(WEST_SUMMER_SEA);
+		break;
+	case AREA::YRONWOOD:
+		list.push_back(PRINCES_PASS); list.push_back(THE_BONEWAY); list.push_back(SEA_OF_DORNE); list.push_back(SUNSPEAR);
+		list.push_back(SALT_SHORE); list.push_back(STARFALL);
+		break;
+	case AREA::SUNSPEAR:
+		list.push_back(YRONWOOD); list.push_back(SEA_OF_DORNE); list.push_back(EAST_SUMMER_SEA); list.push_back(SALT_SHORE);
+		break;
+	case AREA::SUNSPEAR_PORT:
+		list.push_back(SUNSPEAR); list.push_back(EAST_SUMMER_SEA);
+		break;
+	case AREA::REDWYNE_STRAIGHTS:
+		list.push_back(WEST_SUMMER_SEA); list.push_back(HIGHGARDEN); list.push_back(OLDTOWN); list.push_back(THREE_TOWERS);
+		list.push_back(THE_ARBOR); list.push_back(OLDTOWN_PORT);
+		break;
+	case AREA::STARFALL:
+		list.push_back(WEST_SUMMER_SEA); list.push_back(PRINCES_PASS); list.push_back(YRONWOOD); list.push_back(SALT_SHORE);
+		list.push_back(EAST_SUMMER_SEA);
+		break;
+	case AREA::SALT_SHORE:
+		list.push_back(STARFALL); list.push_back(YRONWOOD); list.push_back(SUNSPEAR); list.push_back(EAST_SUMMER_SEA);
+		break;
+	case AREA::THE_ARBOR:
+		list.push_back(REDWYNE_STRAIGHTS); list.push_back(WEST_SUMMER_SEA);
+		break;
+	case AREA::WEST_SUMMER_SEA:
+		list.push_back(SUNSEAT_SEA); list.push_back(SEAROAD_MARCHES); list.push_back(HIGHGARDEN); list.push_back(REDWYNE_STRAIGHTS);
+		list.push_back(THE_ARBOR); list.push_back(THREE_TOWERS); list.push_back(STARFALL); list.push_back(EAST_SUMMER_SEA);
+		break;
+	case AREA::EAST_SUMMER_SEA:
+		list.push_back(WEST_SUMMER_SEA); list.push_back(STARFALL); list.push_back(SALT_SHORE); list.push_back(SUNSPEAR);
+		list.push_back(SEA_OF_DORNE); list.push_back(STORMS_END); list.push_back(SHIPBREAKER_BAY); list.push_back(SUNSPEAR_PORT);
+		break;
+	}
+
+	return list;
+}
+
+static std::vector<int> xTrack = { 787, 901, 1016, 1127, 1241, 1354 };
+static std::vector<int> yTrack = { 3016, 3144, 3268 };
+
 Board::Board(int iNbPlayers, Player* ipPlayers[6]) :_NbPlayers(iNbPlayers)
 {
 	for (int i = 0; i < _NbPlayers; i++)
@@ -315,24 +539,32 @@ L_HRESULT Board::Render(SDL_Surface*& opSurface)
 	return L_S_OK;
 }
 
-L_HRESULT Board::RegisterElement(ELEMENTTYPE iEltType, int iSubType, Player* ipPlayer, AREA iArea)
+BoardPiece* Board::RegisterElement(ELEMENTTYPE iEltType, int iSubType, Player* ipPlayer, AREA iArea,
+	SDL_Rect* ipPosition)
 {
-	CHK_AND_RET_HR(ipPlayer);
+	if (NULL == ipPlayer)
+		return NULL;
 
 	BoardPiece* pElement = new BoardPiece(iEltType, iSubType, ipPlayer, iArea);
-	CHK_AND_RET_HR(pElement);
+	if (NULL == pElement)
+		return NULL;
+
+	if (ipPosition != NULL)
+		pElement->SetPosition(*ipPosition);
 
 	_Elements.push_back(pElement);
 
-	return L_S_OK;
+	return pElement;
 }
 
-L_HRESULT Board::RegisterSuperElement(ELEMENTTYPE iEltType, int iSubType, Player* ipPlayer, AREA iArea, std::vector<int> iSubTypeSubElts)
+BoardPiece* Board::RegisterSuperElement(ELEMENTTYPE iEltType, int iSubType, Player* ipPlayer, AREA iArea, std::vector<int> iSubTypeSubElts)
 {
-	CHK_AND_RET_HR(ipPlayer);
+	if (NULL == ipPlayer)
+		return NULL;
 
 	BoardPiece* pSuperElement = new BoardPiece(iEltType, iSubType, ipPlayer, iArea);
-	CHK_AND_RET_HR(pSuperElement);
+	if (NULL == pSuperElement)
+		return NULL;
 
 	// Create the SubElements
 	std::vector<int>::iterator it;
@@ -343,7 +575,7 @@ L_HRESULT Board::RegisterSuperElement(ELEMENTTYPE iEltType, int iSubType, Player
 
 	_Elements.push_back(pSuperElement);
 
-	return L_S_OK;
+	return pSuperElement;
 }
 
 L_HRESULT Board::_RenderPlayer(SDL_Surface* ipSurface, Player* ipPlayer)
@@ -441,6 +673,19 @@ L_HRESULT Board::_RenderPlayer(SDL_Surface* ipSurface, Player* ipPlayer)
 	SDL_BlitSurface(pPlayerBoard, NULL, ipSurface, &boardPos);
 	SDL_FreeSurface(pPlayerBoard);
 
+	// Put the Player house token in the influence tracks
+	int throneIndex = ipPlayer->GetThronePosition();
+	SDL_Rect thronePos = { xTrack[throneIndex - 1], yTrack[0], 84, 84 };
+	RegisterElement(INFLUENCE, house, ipPlayer, (AREA)0, &thronePos);
+
+	int fiefIndex = ipPlayer->GetFiefPosition();
+	SDL_Rect fiefPos = { xTrack[fiefIndex - 1], yTrack[1], 84, 84 };
+	RegisterElement(INFLUENCE, house, ipPlayer, (AREA)1, &fiefPos);
+
+	int courtIndex = ipPlayer->GetCourtPosition();
+	SDL_Rect courtPos = { xTrack[courtIndex - 1], yTrack[2], 84, 84 };
+	RegisterElement(INFLUENCE, house, ipPlayer, (AREA)0, &courtPos);
+
 	return L_S_OK;
 }
 
@@ -481,4 +726,31 @@ L_HRESULT Board::RemoveElement(ELEMENTTYPE iEltType, Player* ipPlayer, AREA iAre
 	}
 
 	return L_S_OK;
+}
+
+L_HRESULT Board::RemoveElement(BoardPiece* ipBoardPiece)
+{
+	CHK_AND_RET_HR(ipBoardPiece);
+
+	std::vector<BoardPiece*>::iterator it;
+	for (it = _Elements.begin(); it != _Elements.end(); it++)
+	{
+		if (ipBoardPiece == *it)
+		{
+			_Elements.erase(it);
+			return L_S_OK;
+		}
+	}
+
+	return L_E_FAIL;
+}
+
+BoardPiece* Board::GetElementAt(ELEMENTTYPE iEltType, AREA iArea)
+{
+	std::vector<BoardPiece*>::iterator it;
+	for (it = _Elements.begin(); it != _Elements.end(); it++)
+	{
+		if (iEltType == (*it)->GetType() && iArea == (*it)->GetArea())
+			return *it;
+	}
 }

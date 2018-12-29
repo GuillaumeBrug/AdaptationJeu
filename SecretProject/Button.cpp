@@ -52,12 +52,18 @@ L_HRESULT Button::_Init()
 		if(_PositionForced)
 			_pSurface = SDL_CreateRGBSurface(0, _Position.w, _Position.h, 32, 0, 0, 0, 0);
 		else
-			_pSurface = SDL_CreateRGBSurface(0, pButtonBack->w, pButtonBack->h, 32, 0, 0, 0, 0);
+		{
+			int width = pButtonBack->w;
+			if (texteSurface->w + 40 > width)
+				width = texteSurface->w + 32;
+			_pSurface = SDL_CreateRGBSurface(0, width, pButtonBack->h, 32, 0, 0, 0, 0);
+		}
 		CHK_AND_RET_HR(_pSurface);
 		SDL_BlitScaled(pButtonBack, NULL, _pSurface, NULL);
 		SDL_FreeSurface(pButtonBack);
 
-		SDL_Rect textePos = { 16, pButtonBack->h / 2 - texteSurface->h / 2, texteSurface->w, texteSurface->h };
+		SDL_Rect textePos = { _pSurface->w / 2 - texteSurface->w / 2,
+			_pSurface->h / 2 - texteSurface->h / 2, texteSurface->w, texteSurface->h };
 		SDL_BlitSurface(texteSurface, NULL, _pSurface, &textePos);
 		SDL_FreeSurface(texteSurface);
 
@@ -68,7 +74,21 @@ L_HRESULT Button::_Init()
 	}
 	case IMAGE:
 	{
-		_pSurface = IMG_Load(_Image.c_str());
+		
+		if (_Checked)
+		{
+			SDL_Surface* pButton = IMG_Load(_Image.c_str());
+
+			_pSurface = SDL_CreateRGBSurface(0, pButton->w, pButton->h, 32, 0, 0, 0, 0);
+			CHK_AND_RET_HR(_pSurface);
+
+			SDL_FillRect(_pSurface, NULL, SDL_MapRGB(_pSurface->format, 93, 173, 226));
+			SDL_BlitSurface(pButton, NULL, _pSurface, NULL);
+			SDL_FreeSurface(pButton);
+		}
+		else
+			_pSurface = IMG_Load(_Image.c_str());
+		
 		CHK_AND_RET_HR(_pSurface);
 
 		break;

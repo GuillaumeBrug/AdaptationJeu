@@ -14,6 +14,8 @@ public:
 
 	void AddOrderInArea();
 
+	void AdjacentAreas();
+
 	Player** GetPlayers();
 
 private:
